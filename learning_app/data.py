@@ -1,0 +1,88 @@
+"""Seed materials and reviewed question banks. No generated scores or answers."""
+
+COURSES = [
+    {
+        "slug": "machine-learning", "title": "Machine learning foundations", "category": "MACHINE LEARNING",
+        "description": "Build intuition for training, evaluation, and models that generalize.", "color": "sage",
+        "documents": [
+            ("Learning from labeled data", "Supervised learning trains a model on labeled examples: each input is paired with a known target. Classification predicts a category, such as spam or not spam. Regression predicts a continuous value, such as a house price. The training objective measures the difference between predictions and targets."),
+            ("Gradient descent", "Gradient descent updates model parameters to reduce a loss function. Compute the gradient of the loss with respect to each weight, then subtract the learning rate times that gradient from the weight. A learning rate that is too large can overshoot a minimum; one that is too small can make training slow. Mini-batch gradient descent estimates gradients using a subset of training examples at each step."),
+            ("Generalization and overfitting", "Overfitting occurs when a model fits training data closely but performs poorly on unseen examples. Keep training, validation, and test sets separate. Use training data to fit weights, validation data to choose hyperparameters, and a held-out test set for final evaluation. Regularization discourages excessive model complexity. Early stopping stops training when validation performance stops improving."),
+            ("Data leakage", "Data leakage occurs when information unavailable at prediction time enters training or evaluation. Fit preprocessing steps, including standardization and imputation, on the training set only, then apply the fitted transformation to validation and test sets. For time-series tasks, preserve chronological order when splitting data so future observations do not leak into the past."),
+            ("Precision and recall", "Precision is true positives divided by all predicted positives: TP / (TP + FP). Recall is true positives divided by all actual positives: TP / (TP + FN). A model can have high accuracy while missing rare positive cases in an imbalanced dataset. The F1 score is the harmonic mean of precision and recall. Choose a metric according to the cost of false positives and false negatives."),
+            ("Embeddings and retrieval", "An embedding represents text as a numerical vector so similar meanings can be compared. Retrieval-augmented generation first retrieves relevant source material, then asks a language model to answer using that context. Retrieval quality and answer grounding require separate evaluation. A citation identifies the source used; it does not itself prove that an answer is correct. If the source does not support an answer, the system should abstain."),
+        ],
+        "questions": [
+            ("learning", "easy", "Which task predicts a continuous number?", ["Classification", "Regression", "Clustering", "Tokenization"], 1, "Regression predicts continuous targets, such as a price. Classification predicts a category."),
+            ("optimization", "easy", "How does gradient descent update a weight?", ["Add the learning rate to every weight", "Subtract learning rate × gradient", "Set every weight to zero", "Copy the target into the weight"], 1, "The update is w ← w − learning_rate × gradient(loss, w)."),
+            ("evaluation", "easy", "Which data should choose hyperparameters?", ["Final test set", "All data mixed together", "Validation set", "Production labels from the future"], 2, "Validation data guides model selection. Keep the test set held out for final evaluation."),
+            ("evaluation", "medium", "A classifier predicts 20 positives, of which 15 are correct. What is precision?", ["0.25", "0.50", "0.75", "1.00"], 2, "Precision = TP / predicted positives = 15 / 20 = 0.75."),
+            ("leakage", "medium", "When should a standardizer fit its mean and variance?", ["On all data before splitting", "On training data only", "On the test set", "Separately on every prediction"], 1, "Fit transformations on training data only and reuse the fitted transformation on validation and test data."),
+            ("optimization", "medium", "What can happen if the learning rate is too large?", ["The model must converge faster", "The optimizer can overshoot the minimum", "The test set gets larger", "Labels become continuous"], 1, "Large updates can overshoot a minimum, making optimization unstable."),
+            ("retrieval", "hard", "A RAG system returns a citation but the cited source contradicts the answer. What is the issue?", ["The answer is grounded because a citation exists", "A citation does not establish answer correctness", "Embeddings cannot compare text", "The problem is always latency"], 1, "Citation presence is not evidence of entailment. Evaluate whether the source actually supports the claim."),
+            ("leakage", "hard", "What split is appropriate for forecasting future demand?", ["Randomly mix future and past observations", "Preserve chronological order", "Use the test period to fit preprocessing", "Evaluate only on training rows"], 1, "Chronological splits prevent future information entering a past prediction task."),
+            ("evaluation", "hard", "Why can accuracy mislead on a rare-positive classification task?", ["It ignores all correct predictions", "Predicting the majority class can score highly while missing positives", "It is identical to recall", "It cannot be calculated"], 1, "A majority-class predictor can have high accuracy but zero recall for the rare positive class."),
+        ],
+    },
+    {
+        "slug": "python", "title": "Python, thoughtfully", "category": "PYTHON",
+        "description": "Understand objects, functions, and practical patterns for reliable Python.", "color": "ochre",
+        "documents": [
+            ("Lists and tuples", "A Python list is an ordered mutable sequence. You can append, remove, or replace its elements. A tuple is an ordered immutable sequence: its element references cannot be reassigned after creation. Use a tuple for a fixed collection of values and a list when the sequence itself must change."),
+            ("Dictionaries and sets", "A dictionary maps unique hashable keys to values. Accessing a missing key with square brackets raises KeyError; dict.get(key, default) returns a default instead. A set stores unique hashable elements and supports membership tests, union, intersection, and difference. An empty set is set(); empty braces create a dictionary."),
+            ("Functions and defaults", "A function takes arguments and can return a result. Python evaluates default argument expressions once when the function is defined, not on every call. A mutable default such as a list can therefore retain changes across calls. Prefer None as the default and create a new list inside the function when the argument is None."),
+            ("Iteration and generators", "An iterator produces values one at a time. A generator function uses yield to pause and resume execution, preserving local state between yielded values. Generators can process large streams without storing all results in memory. A list comprehension eagerly builds a list; a generator expression produces values lazily."),
+            ("Errors and resources", "Catch specific exception types when you can handle the failure. A finally block runs during cleanup whether the try block succeeds or raises. The with statement uses a context manager to acquire and release a resource. For example, with open(path) as file closes the file when the block ends, including when an exception occurs."),
+            ("Tests and pure functions", "A pure function returns the same output for the same input and does not modify external state. Pure functions are straightforward to test with concrete inputs and expected results. Isolate network and filesystem effects at boundaries. A meaningful test exercises behavior; asserting a hardcoded success dictionary does not test an application integration."),
+        ],
+        "questions": [
+            ("collections", "easy", "Which sequence can you append to?", ["Tuple", "List", "Integer", "Frozen set"], 1, "Lists are mutable sequences and provide append()."),
+            ("collections", "easy", "What does an empty pair of braces {} create?", ["Set", "Tuple", "Dictionary", "Generator"], 2, "{} creates a dictionary. Use set() for an empty set."),
+            ("resources", "easy", "What is the main benefit of with open(path) as file?", ["It ignores file errors", "It releases the file resource when the block exits", "It reads only JSON", "It makes files immutable"], 1, "A context manager closes the file when leaving the block, including after an exception."),
+            ("functions", "medium", "Why is def f(items=[]) risky?", ["Lists cannot be arguments", "The same default list can be reused across calls", "The list is immutable", "Python evaluates defaults after every call"], 1, "Default expressions are evaluated once at definition time. Use None, then create a new list inside."),
+            ("iteration", "medium", "What does yield do in a generator function?", ["Returns all results immediately", "Pauses execution and produces a value", "Deletes local variables", "Starts a new process"], 1, "yield suspends the generator and preserves its state until the next iteration."),
+            ("collections", "medium", "What happens when d['missing'] accesses a missing dictionary key?", ["Returns None", "Returns zero", "Raises KeyError", "Creates the key automatically"], 2, "Square-bracket access raises KeyError. get() supports a fallback."),
+            ("testing", "hard", "Which test best verifies a discount API adapter?", ["Assert a literal success dictionary is true", "Call the adapter with a fake transport and inspect its actual request and result", "Assert the test function exists", "Avoid all failure cases"], 1, "Exercise the real adapter behavior while replacing the external transport."),
+            ("iteration", "hard", "Why use a generator for a large input stream?", ["It must load the entire stream first", "It can produce results without keeping all of them in memory", "It makes every operation parallel", "It prevents exceptions"], 1, "Lazy production allows bounded-memory processing of large or unbounded streams."),
+            ("functions", "hard", "Which function is pure?", ["One that increments a global counter", "One that returns x * x without side effects", "One that writes a file", "One that sends an HTTP request"], 1, "A pure function depends on its inputs and does not mutate external state."),
+        ],
+    },
+    {
+        "slug": "sql", "title": "SQL for real questions", "category": "SQL & DATA",
+        "description": "Turn relational data into clear answers with joins, grouping, and safe queries.", "color": "blue",
+        "documents": [
+            ("Keys and relationships", "A primary key uniquely identifies a row and cannot be NULL. A foreign key references a key in another table and can enforce referential integrity. A composite primary key uses more than one column together, such as (student_id, course_id), to identify a row."),
+            ("Filtering and ordering", "SELECT chooses columns and FROM chooses a table. WHERE filters individual rows before aggregation. ORDER BY sorts result rows; use DESC for descending order and ASC for ascending order. A result has no guaranteed order without ORDER BY. LIMIT restricts the number of returned rows."),
+            ("Joins", "An INNER JOIN returns rows where the join condition matches in both tables. A LEFT JOIN preserves every row from the left table and supplies NULL for missing right-side values. A one-to-many relationship can duplicate left-side values in the joined output, so check the grain before counting or summing."),
+            ("Aggregation", "GROUP BY forms groups of rows for aggregate functions such as SUM, COUNT, and AVG. WHERE filters rows before grouping; HAVING filters groups after aggregation. COUNT(*) counts rows. COUNT(column) counts only non-NULL values in that column. SUM and AVG normally ignore NULL inputs."),
+            ("Transactions", "A transaction groups database changes into one unit. COMMIT makes those changes durable; ROLLBACK discards uncommitted changes. Atomicity means a transaction's changes happen together or not at all. Use a transaction to insert a quiz attempt and update progress so they cannot disagree after a failure."),
+            ("Parameterized queries", "A parameterized query passes values separately from SQL code. Use placeholders and driver parameters rather than concatenating user text into a query. This prevents input from changing SQL structure and reduces SQL injection risk. Parameters represent values, not arbitrary table names or SQL keywords; identifiers require a trusted allowlist."),
+        ],
+        "questions": [
+            ("keys", "easy", "What uniquely identifies a table row?", ["Primary key", "ORDER BY", "HAVING", "LIMIT"], 0, "A primary key uniquely identifies each row and cannot be NULL."),
+            ("filtering", "easy", "Which clause filters individual rows?", ["GROUP BY", "WHERE", "ORDER BY", "COMMIT"], 1, "WHERE filters rows before grouping and aggregation."),
+            ("joins", "easy", "Which join preserves unmatched left-side rows?", ["INNER JOIN", "LEFT JOIN", "CROSS JOIN only", "No join can do this"], 1, "LEFT JOIN retains left-side rows and uses NULL for missing right-side fields."),
+            ("aggregation", "medium", "Which clause filters aggregated groups?", ["WHERE", "LIMIT", "HAVING", "SELECT"], 2, "HAVING applies after grouping, so it can filter aggregate results."),
+            ("aggregation", "medium", "How do COUNT(*) and COUNT(column) differ?", ["They always return different numbers", "COUNT(column) ignores NULL values", "COUNT(*) ignores NULL rows", "COUNT(column) counts tables"], 1, "COUNT(*) counts rows. COUNT(column) counts non-NULL entries in that column."),
+            ("security", "medium", "How should user-entered values enter a SQL query?", ["String concatenation", "Driver parameters and placeholders", "Directly as a table name", "By removing spaces only"], 1, "Parameters keep data separate from SQL structure."),
+            ("transactions", "hard", "Why update a quiz attempt and progress in one transaction?", ["To hide the answer key", "To ensure both changes commit together or neither does", "To disable validation", "To avoid using a primary key"], 1, "Atomicity keeps the attempt and derived progress consistent after failures."),
+            ("joins", "hard", "Why can joining orders to order lines inflate a sum of order totals?", ["JOIN always removes duplicates", "Each order total can repeat once for every matching line", "SUM ignores positive values", "Foreign keys forbid joins"], 1, "A one-to-many join changes the row grain; repeated order totals can be counted multiple times."),
+            ("filtering", "hard", "Can a SQL parameter safely supply an arbitrary table name?", ["Yes, value parameters replace all SQL syntax", "No, identifiers need a trusted allowlist or safe identifier handling", "Only if the name contains a space", "Only in SELECT *"], 1, "Value parameters do not stand for SQL identifiers or keywords."),
+        ],
+    },
+]
+
+EVALUATION_CASES = [
+    ("machine-learning", "How do gradient descent updates change weights?", "Gradient descent"),
+    ("machine-learning", "What is precision and recall?", "Precision and recall"),
+    ("machine-learning", "How do I prevent data leakage in preprocessing?", "Data leakage"),
+    ("machine-learning", "What is overfitting?", "Generalization and overfitting"),
+    ("python", "Why are mutable default function arguments risky?", "Functions and defaults"),
+    ("python", "How do generators and yield work?", "Iteration and generators"),
+    ("python", "How do lists differ from tuples?", "Lists and tuples"),
+    ("python", "How can I handle missing dictionary keys?", "Dictionaries and sets"),
+    ("sql", "How does a left join work?", "Joins"),
+    ("sql", "What is the difference between WHERE and HAVING?", "Aggregation"),
+    ("sql", "How do parameterized queries prevent SQL injection?", "Parameterized queries"),
+    ("sql", "Why should I use a transaction?", "Transactions"),
+]
